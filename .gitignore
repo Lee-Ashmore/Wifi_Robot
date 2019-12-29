@@ -1,0 +1,9 @@
+#files to ignore
+.env
+.vscode
+
+#patterns
+*.json
+*.pickle
+*Pip*
+*__*
