@@ -5,10 +5,10 @@ from email_handler.email import Email_Handler
 class Controller:
     def __init__(self, recipients, password):
         self.__source = 'Controller: '
+        self.__password = password
 
         self.__email_handler = Email_Handler(
             recipients, self.handle_new_email)
-        self.__password = password
 
     def get_password(self):
         """Get the current password
@@ -29,9 +29,8 @@ class Controller:
     def handle_new_email(self):
         """Handles a new email event
         """
-        print(self.__source)
         # TODO: flush out to respond to various calls
-
+        print('HERE DICK')
         # get emails
         email = self.__email_handler.get_most_recent_email()
         # use content of email to decide on next action
@@ -44,5 +43,7 @@ class Controller:
         """Waits for messages from other components of the app and dispatches 
         commands as necessary
         """
+
+        self.__email_handler.run()
         # waits for new messages and reacts based on message
         print("Watch")

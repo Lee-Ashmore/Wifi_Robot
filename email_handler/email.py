@@ -126,3 +126,6 @@ class Email_Handler:
         for recipient in self.__recipients:
             message = self.__create_message(recipient, "Wifi", message_text)
             return self.__send_message(message)
+
+    def run(self):
+        self.__watcher.run()

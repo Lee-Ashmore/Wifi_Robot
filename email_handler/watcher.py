@@ -6,8 +6,6 @@ import email
 from email.mime.text import MIMEText
 import base64
 
-import rx
-
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -56,16 +54,18 @@ class Watcher:
         self.__email_event = Event()
         self.__email_event += handler
 
-        self.__watch()
-
     def __get_emails(self):
         """Gets a list of all the emails that have been recieved
+
+        Returns: 
+            a list containing dictionaries of the form {idNumber, threadNumber} 
+            that represent all messages recieved by a class
         """
         # This returns a list of Gmail message objects. Documentation can be found at
         # https://developers.google.com/gmail/api/v1/reference/users/messages/list
         return self.__service.users().messages().list(userId='me').execute()['messages']
 
-    def __watch(self):
+    def run(self):
         """Watch the gmail inbox for commands
         """
         most_recent = self.__most_recent
