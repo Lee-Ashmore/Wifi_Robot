@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     # Use screen scraper to change password
 
-    test = Controller(["wifi.robot.overlord@gmail.com"], 'test_password')
+    test = Controller(["jleeashmore@gmail.com"], 'test_password')
     test.run()
 
     # Email_Handler = Email_Handler(["wifi.robot.overlord@gmail.com"])

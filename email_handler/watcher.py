@@ -29,7 +29,7 @@ class Event:
 
     def __call__(self, *args, **kwargs):
         for handler in self.__handlers:
-            print(handler.__name__)
+            print(f'\n\tHandler Triggered: {handler.__name__}')
             handler(*args, **kwargs)
 
 
@@ -42,7 +42,7 @@ class Watcher:
     """
 
     def __init__(self, service, handler):
-        self.__source = "Watcher: "
+        self.__source = "\nWatcher: "
 
         self.__user_id = 'Wifi.Robot.Overlord@gmail.com'
 
@@ -73,13 +73,13 @@ class Watcher:
             emails = self.__get_emails()
 
             if most_recent != emails[0]:
-                print("new messsage recieved")
+                print(f'{self.__source} New messsage recieved')
 
                 # Dispatch event for new email
                 self.__email_event()
 
                 # Reset most recent
-                most_recent = emails[0]
+                most_recent = self.__get_emails()[0]
 
             else:
                 time.sleep(0.3)

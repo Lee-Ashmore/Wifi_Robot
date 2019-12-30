@@ -4,11 +4,12 @@ from email_handler.email import Email_Handler
 
 class Controller:
     def __init__(self, recipients, password):
-        self.__source = 'Controller: '
+        self.__source = '\nController: '
         self.__password = password
+        self.__recipients = recipients
 
         self.__email_handler = Email_Handler(
-            recipients, self.handle_new_email)
+            self.__recipients, self.handle_new_email)
 
     def get_password(self):
         """Get the current password
@@ -29,21 +30,46 @@ class Controller:
     def handle_new_email(self):
         """Handles a new email event
         """
-        # TODO: flush out to respond to various calls
-        print('HERE DICK')
-        # get emails
         email = self.__email_handler.get_most_recent_email()
-        # use content of email to decide on next action
         message = self.__email_handler.get_email_body(email['id'])
-        print(message)
+        sender = self.__email_handler.get_email_sender(email['id'])
 
-    # TODO: May not need this function with new event architecture
+        if 'COMMAND' in message:
+
+            if 'test' in message:
+                print(f'{self.__source} Test Command Recieved')
+
+            if 'new password' in message:
+                print(f'{self.__source} New Password Command Recieved')
+                # create new password
+                # store new password
+                # reset current password via screenscraper
+                # notify users of change
+                self.__email_handler.send(
+                    f'Password has been reset: {self.__password}')
+
+            if 'get password' in message:
+                print(f'{self.__source} Get Password Command Recieved')
+                self.__email_handler.send('test', recipients=[sender])
+
+            if 'add user' in message:
+                print(f'{self.__source} Add User Command Recieved')
+                self.__recipients.append(sender)
+                # send email with message explaing email use
+
+            if 'help' in message:
+                print(f'{self.__source} Help Command Recieved')
+                # send email with message explaing email use
 
     def run(self):
         """Waits for messages from other components of the app and dispatches 
         commands as necessary
         """
 
-        self.__email_handler.run()
         # waits for new messages and reacts based on message
-        print("Watch")
+        try:
+            self.__email_handler.run()
+        except KeyboardInterrupt:
+            print('\nClosing...\n')
+        except Exception as e:
+            print(f'{self.__source}: and error has occured: %s' % e)
